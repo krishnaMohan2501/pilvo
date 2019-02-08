@@ -19,13 +19,13 @@ def search_term(request):
 	emails = re.findall('\S+@\S+',term)
 	if emails:
 	    persons = list(Person.objects.filter(email__in=emails))
-		for person in persons:
-		    search_result.append({"name":str(person.first_name) + str(person.last_name)}) 
+	    for person in persons:
+	        search_result.append({"name":str(person.first_name) + str(person.last_name)}) 
 	   
 	else:
 	    persons = list(Person.objects.filter(first_name=term,last_name=term))
-		for person in persons:
-		    search_result.append({"name":str(person.first_name)+str(person.last_name)})
+	    for person in persons:
+  	        search_result.append({"name":str(person.first_name)+str(person.last_name)})
    	return search_result
 
 
@@ -33,7 +33,7 @@ def new_contact(request):
 
     if request.method == "POST":
 	ret_data = dict()
-	dict.update("message": "New person get added successfully cheers..!!")
+	ret_data.update({"message": "New person get added successfully cheers..!!"})
         if request.POST:
 	    first_name = request.POST.get('first_name',None)
 	    last_name = request.POST.get('last_name', None)
@@ -49,7 +49,7 @@ def new_contact(request):
 			email = email
             	)
             except:
-		ret_data.update("message":"Oop's new person not get's added...something went wrong..!!")
+		ret_data.update({"message":"Oop's new person not get's added...something went wrong..!!"})
 		pass
             
         return JSONResponse(ret_data)
@@ -59,7 +59,7 @@ def edit_contact(request, contact_id):
     contact = Person.objects.get(pk=contact_id)
     if request.method == "POST":
 	ret_data = dict()
-    	ret_data.update("message": "Sucessfully edited the record..!!")
+    	ret_data.update({"message": "Sucessfully edited the record..!!"})
         if request.POST:
 	    try:
 	    	first_name = request.POST.get('first_name',contact.first_name)
@@ -76,7 +76,7 @@ def edit_contact(request, contact_id):
 		contact.email = email
             	contact.save()
 	    except:
-		ret_data.update("message":"Editing for {0} is failed ".format(contact.first_name))
+		ret_data.update({"message":"Editing for {0} is failed ".format(contact.first_name)})
 		pass
 
             return JSONResponse(ret_data) 
@@ -94,6 +94,6 @@ def delete_contact(request, contact_id):
 	    try:
             	contact.delete()
             except:
-		ret_data.update("message":"Some thing went wrong during deletion..!!!")
+		ret_data.update({"message":"Some thing went wrong during deletion..!!!"})
 		pass
             return JSONResponse(ret_data)
