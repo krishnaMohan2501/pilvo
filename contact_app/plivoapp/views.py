@@ -33,7 +33,7 @@ def new_contact(request):
 
     if request.method == "POST":
 	ret_data = dict()
-	ret_data.update({"message": "New person get added successfully cheers..!!"})
+	ret_data.update({"message": "Request body is blank...Bad request.!!"})
         if request.POST:
 	    first_name = request.POST.get('first_name',None)
 	    last_name = request.POST.get('last_name', None)
@@ -48,10 +48,11 @@ def new_contact(request):
                 	address = address,
 			email = email
             	)
+		ret_data.update({"message":"Successfully added ...!!!"})
             except:
 		ret_data.update({"message":"Oop's new person not get's added...something went wrong..!!"})
 		pass
-            
+     
         return JSONResponse(ret_data)
 
 
@@ -59,7 +60,7 @@ def edit_contact(request, contact_id):
     contact = Person.objects.get(pk=contact_id)
     if request.method == "POST":
 	ret_data = dict()
-    	ret_data.update({"message": "Sucessfully edited the record..!!"})
+    	ret_data.update({"message": "Request body is blank...Bad request"})
         if request.POST:
 	    try:
 	    	first_name = request.POST.get('first_name',contact.first_name)
@@ -75,6 +76,7 @@ def edit_contact(request, contact_id):
             	contact.address = address
 		contact.email = email
             	contact.save()
+		ret_data.update({"message": "Successfully edited the record"})
 	    except:
 		ret_data.update({"message":"Editing for {0} is failed ".format(contact.first_name)})
 		pass
@@ -90,10 +92,9 @@ def delete_contact(request, contact_id):
     if request.method == "POST":
         ret_data = dict()
 	ret_data.update({"message": "Sucessfully deleted the record..!!"})
-        if request.POST:
-	    try:
-            	contact.delete()
-            except:
-		ret_data.update({"message":"Some thing went wrong during deletion..!!!"})
-		pass
-            return JSONResponse(ret_data)
+        try:
+	    contact.delete()
+        except:
+	    ret_data.update({"message":"Some thing went wrong during deletion..!!!"})
+	    pass
+        return JSONResponse(ret_data)
