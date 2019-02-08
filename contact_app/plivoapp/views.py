@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 # Create your views here.
 
-
+from django.utils.decorators import method_decorator
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
@@ -55,7 +55,7 @@ def new_contact(request):
      
         return JSONResponse(ret_data)
 
-
+@method_decorator(authenticate_request('contact_id'))
 def edit_contact(request, contact_id):
     contact = Person.objects.get(pk=contact_id)
     if request.method == "POST":
@@ -85,7 +85,7 @@ def edit_contact(request, contact_id):
 
                
 
-
+@method_decorator(authenticate_request('contact_id'))
 def delete_contact(request, contact_id):
     contact = Person.objects.get(pk=contact_id)
     
